@@ -4,6 +4,8 @@
     <title>Spring Framework & MongoDB Demo by Andy Oh</title>
     <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="/stylesheets/main.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.10.1/bootstrap-table.min.js"></script>
 </head>
 
 <body>
@@ -12,11 +14,197 @@
   <div class="container">
     
     <h3>Spring Framework & MongoDB Demo<br>by Andy Oh</h3>
-    <p>This is a sample Java application deployed to Heroku. It's a reasonably simple app - but a good foundation for understanding how to get the most out of the Heroku platform.</p>
-    <a type="button" class="btn btn-lg btn-default" href="https://devcenter.heroku.com/articles/getting-started-with-java"><span class="glyphicon glyphicon-flash"></span> Getting Started with Java</a>
-    <a type="button" class="btn btn-lg btn-primary" href="https://github.com/heroku/java-getting-started"><span class="glyphicon glyphicon-download"></span> Source on GitHub</a>
+
+    <div class="row">
+	
+		<table id="table" data-url='/user/list' class="table table-striped">
+		  <thead>
+		    <tr>
+		      <th data-field="id">ID</th>
+		      <th data-field="name">Name</th>
+		      <th data-field="age">Age</th>
+		      <th data-field="heartRate">Heart Rate</th>
+		    </tr>
+		  </thead>
+		</table>
+	</div>
+	
+	<hr>
+
+	<form id="save_form" role="form">
+	
+	    <div class="messages"></div>
+	
+	    <div class="controls">
+	
+	        <div class="row">
+	            <div class="col-md-3">
+	                <div class="form-group">
+	                    <label for="form_id">ID *</label>
+	                    <input id="form_id" type="text" name="id" class="form-control" placeholder="Please enter your ID" required="required" data-error="ID is required.">
+	                    <div class="help-block with-errors"></div>
+	                </div>
+	            </div>
+	            <div class="col-md-3">
+	                <div class="form-group">
+	                    <label for="form_name">Name *</label>
+	                    <input id="form_name" type="text" name="name" class="form-control" placeholder="Please enter your name *" required="required" data-error="Name is required.">
+	                    <div class="help-block with-errors"></div>
+	                </div>
+	            </div>
+	            <div class="col-md-3">
+	                <div class="form-group">
+	                    <label for="form_age">Age</label>
+	                    <input id="form_age" type="number" name="age" class="form-control" placeholder="Please enter your age">
+	                    <div class="help-block with-errors"></div>
+	                </div>
+	            </div>
+	            <div class="col-md-3">
+	                <div class="form-group">
+	                    <label for="form_heart_rate">Heart Rate</label>
+	                    <input id="form_heart_rate" type="number" name="heartRate" class="form-control" placeholder="Please enter your heart rate">
+	                    <div class="help-block with-errors"></div>
+	                </div>
+	            </div>
+	        </div>
+	
+	        <div class="row">
+	            <div class="col-md-12">
+	                <input type="button" onclick="saveData();" class="btn btn-lg btn-success btn-send" value="Save Data">
+	            </div>
+	        </div>
+	    </div>
+	
+	</form>
+
+	<hr>
+	
+	<form id="update_form" role="form">
+	
+	    <div class="messages"></div>
+	
+	    <div class="controls">
+	
+	        <div class="row">
+	            <div class="col-md-3">
+	                <div class="form-group">
+	                    <label for="form_id">ID *</label>
+	                    <input id="form_id" type="text" name="id" class="form-control" placeholder="Please enter your ID" required="required" data-error="ID is required.">
+	                    <div class="help-block with-errors"></div>
+	                </div>
+	            </div>
+	            <div class="col-md-3">
+	                <div class="form-group">
+	                    <label for="form_name">Name</label>
+	                    <input id="form_name" type="text" name="name" class="form-control" placeholder="Please enter your name">
+	                    <div class="help-block with-errors"></div>
+	                </div>
+	            </div>
+	            <div class="col-md-3">
+	                <div class="form-group">
+	                    <label for="form_age">Age</label>
+	                    <input id="form_age" type="number" name="age" class="form-control" placeholder="Please enter your age">
+	                    <div class="help-block with-errors"></div>
+	                </div>
+	            </div>
+	            <div class="col-md-3">
+	                <div class="form-group">
+	                    <label for="form_heart_rate">Heart Rate</label>
+	                    <input id="form_heart_rate" type="number" name="heartRate" class="form-control" placeholder="Please enter your heart rate">
+	                    <div class="help-block with-errors"></div>
+	                </div>
+	            </div>
+	        </div>
+	
+	        <div class="row">
+	            <div class="col-md-12">
+	                <input type="button" onclick="updateData();" class="btn btn-lg btn-warning btn-send" value="Update Data">
+	            </div>
+	        </div>
+	    </div>
+	
+	</form>
+
+	<hr>
+	
+	<form id="delete_form" role="form">
+	
+	    <div class="messages"></div>
+	
+	    <div class="controls">
+	
+	        <div class="row">
+	            <div class="col-md-3">
+	                <div class="form-group">
+	                    <label for="form_id">ID *</label>
+	                    <input id="form_id" type="text" name="id" class="form-control" placeholder="Please enter your ID" required="required" data-error="ID is required.">
+	                    <div class="help-block with-errors"></div>
+	                </div>
+	            </div>
+
+	        <div class="row">
+	            <div class="col-md-12">
+	                <input type="button" onclick="deleteData();" class="btn btn-lg btn-danger btn-send" value="Delete Data">
+	            </div>
+	        </div>
+	    </div>
+	
+	</form>
+	
   </div>
 </div>
 
+<script>
+$.get('/user/list', function(data, status){
+	$('#table').bootstrapTable({data:data})
+});
+
+function objectifyForm(formArray) {
+  var returnArray = {};
+  for (var i = 0; i < formArray.length; i++){
+    returnArray[formArray[i]['name']] = formArray[i]['value'];
+  }
+  return returnArray;
+}
+
+function saveData(){
+	var formData = JSON.stringify(objectifyForm($("#save_form").serializeArray()));
+	console.log(formData);
+	$.ajax({
+	  type: 'POST',
+	  url: 'user',
+	  data: formData,
+	  success: function(){location.reload();},
+	  dataType: 'json',
+	  contentType : 'application/json'
+	});
+	updateTable();
+}
+
+function updateData(){
+	var formData = JSON.stringify(objectifyForm($("#update_form").serializeArray()));
+	console.log(formData);
+	$.ajax({
+	  type: 'PUT',
+	  url: 'user',
+	  data: formData,
+	  success: function(){location.reload();},
+	  dataType: 'json',
+	  contentType : 'application/json'
+	});
+}
+
+function deleteData(){
+	var formData = $("#delete_form #form_id").val();
+	console.log(formData);
+	$.ajax({
+	  type: 'DELETE',
+	  url: 'user/'+formData,
+	  data: formData,
+	  success: function(){location.reload();}
+	});
+}
+
+</script>
 </body>
 </html>

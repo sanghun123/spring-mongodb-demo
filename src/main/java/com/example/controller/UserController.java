@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,12 @@ public class UserController {
 
     @Autowired
     UserRepository userRepository;
+
+
+    @RequestMapping(value = "/list") 
+    public List<User> list() {
+        return userRepository.findAll();
+    }
 
     @RequestMapping(value = "/{id}") 
     public Optional<User> read(@PathVariable String id) {
